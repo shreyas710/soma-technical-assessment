@@ -1,6 +1,7 @@
 "use client";
 import { Todo } from "@prisma/client";
 import { useState, useEffect } from "react";
+import { SpinnerImg } from "./utils/spinner";
 
 export default function Home() {
   const [newTodo, setNewTodo] = useState("");
@@ -83,16 +84,25 @@ export default function Home() {
               ? new Date(todo.dueDate).toISOString().split("T")[0]
               : null;
             const todayDate = new Date().toISOString().split("T")[0];
-            const hasDueDatePassed = todoDueDate ? todoDueDate < todayDate : false;
+            const hasDueDatePassed = todoDueDate
+              ? todoDueDate < todayDate
+              : false;
             return (
               <li
                 key={todo.id}
                 className='flex justify-between items-center bg-white bg-opacity-90 p-4 mb-4 rounded-lg shadow-lg'>
+                {todo.imageUrl ? (
+                  <SpinnerImg src={todo.imageUrl} alt={todo.title} />
+                ) : (
+                  <div className='w-16 h-16 rounded-md bg-gray-100 flex-shrink-0' />
+                )}
                 <span className='text-gray-800'>{todo.title}</span>
                 {todoDueDate != null && (
                   <span
                     className={`text-sm ${
-                      hasDueDatePassed ? "text-red-500 font-bold" : "text-gray-800"
+                      hasDueDatePassed
+                        ? "text-red-500 font-bold"
+                        : "text-gray-800"
                     }`}>
                     {todoDueDate}
                   </span>
